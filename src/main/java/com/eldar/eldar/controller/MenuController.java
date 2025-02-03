@@ -9,6 +9,9 @@ import com.eldar.eldar.utils.MarcaTarjeta;
 import com.eldar.eldar.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
@@ -16,6 +19,8 @@ import java.util.List;
 import java.util.Scanner;
 
 @Controller
+@Component
+@Profile("!test")
 public class MenuController implements CommandLineRunner {
     @Autowired
     private PersonaService personaService;
@@ -47,7 +52,7 @@ public class MenuController implements CommandLineRunner {
                         break;
                     case 0:
                         System.out.println("¡Hasta luego!");
-                        return;
+                        SpringApplication.exit(SpringApplication.run(MenuController.class, args), () -> 0);
                     default:
                         System.out.println("Opción no válida.");
                 }
@@ -111,7 +116,7 @@ public class MenuController implements CommandLineRunner {
             tarjeta.setTitularNombreCompleto(titularNombreCompleto);
             tarjeta.setPersona(persona);
 
-            tarjetaService.registrarTarjeta(tarjeta);
+            tarjetaService.registrarTarjeta(tarjeta, persona.getEmail());
             System.out.println("Tarjeta registrada con éxito.");
         } else {
             System.out.println("Persona no encontrada.");

@@ -5,6 +5,8 @@ import com.eldar.eldar.model.Tarjeta;
 import com.eldar.eldar.repository.TarjetaRepository;
 import com.eldar.eldar.service.TarjetaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +16,18 @@ public class TarjetaServiceImpl implements TarjetaService {
     @Autowired
     private TarjetaRepository tarjetaRepository;
 
+    @Autowired
+    private JavaMailSender emailSender;
+
     @Override
-    public Tarjeta registrarTarjeta(Tarjeta tarjeta) {
-        return tarjetaRepository.save(tarjeta);
+    public Tarjeta registrarTarjeta(Tarjeta tarjeta, String email) {
+        tarjetaRepository.save(tarjeta);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Detalles de tu tarjeta");
+        message.setText("CVV: " + tarjeta.getCodigoSeguridad() + "\nPAN: " + tarjeta.getPan());
+        emailSender.send(message);
+        return tarjeta;
     }
 
     @Override
@@ -26,5 +37,19 @@ public class TarjetaServiceImpl implements TarjetaService {
             throw new AppException("No se encontraron tarjetas asociadas a este DNI.");
         }
         return tarjetas;
+    }
+
+    @Override
+    public Tarjeta obtenerTarjetaPorPan(String pan) {
+        Tarjeta tarjeta = tarjetaRepository.findByPan(pan);
+        if (tarjeta == null) {
+            throw new AppException("No se encontró una tarjeta con el PAN: " + pan);
+        }
+        return tarjeta;
+    }
+
+    @Override
+    public void eliminarTarjeta(Long id) {
+        tarjetaRepository.deleteById(id);
     }
 }

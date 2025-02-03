@@ -29,4 +29,18 @@ public class PersonaServiceImpl implements PersonaService {
         }
         return persona;
     }
+
+    @Override
+    public Persona obtenerPorEmail(String email) {
+        Persona persona = personaRepository.findByEmail(email);
+        if (persona == null) {
+            throw new AppException("No se encontró una persona con el email: " + email);
+        }
+        return persona;
+    }
+
+    @Override
+    public void eliminarUsuario(Long id) {
+        personaRepository.deleteById(id);
+    }
 }

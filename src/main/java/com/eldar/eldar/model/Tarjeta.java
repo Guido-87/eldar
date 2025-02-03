@@ -21,6 +21,7 @@ public class Tarjeta {
     private Persona persona;
 
     private int codigoSeguridad;
+    private String pan;
 
     public Long getId() {
         return id;
@@ -76,5 +77,13 @@ public class Tarjeta {
 
     public void setCodigoSeguridad(int codigoSeguridad) {
         this.codigoSeguridad = codigoSeguridad;
+    }
+
+    public String getPan() {
+        return pan;
+    }
+
+    public void setPan(String pan) {
+        this.pan = pan;
     }
 }
