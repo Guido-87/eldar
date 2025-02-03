@@ -11,7 +11,7 @@ public class CompraController {
     private CompraService compraService;
 
     @PostMapping
-    public void realizarCompra(@RequestParam Double monto, @RequestParam String detalle, @RequestParam String pan, @RequestParam String cvv) {
+    public void realizarCompra(@RequestParam Double monto, @RequestParam String detalle, @RequestParam String pan, @RequestParam String cvv) throws Exception {
         compraService.realizarCompra(monto, detalle, pan, cvv);
     }
 }

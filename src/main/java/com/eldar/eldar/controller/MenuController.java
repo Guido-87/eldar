@@ -5,6 +5,7 @@ import com.eldar.eldar.model.Persona;
 import com.eldar.eldar.model.Tarjeta;
 import com.eldar.eldar.service.PersonaService;
 import com.eldar.eldar.service.TarjetaService;
+import com.eldar.eldar.utils.EncryptUtil;
 import com.eldar.eldar.utils.MarcaTarjeta;
 import com.eldar.eldar.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 @Controller
@@ -94,7 +95,7 @@ public class MenuController implements CommandLineRunner {
         System.out.println("Persona registrada con éxito.");
     }
 
-    private void registrarTarjeta() {
+    private void registrarTarjeta() throws Exception {
         System.out.println("Ingrese el DNI del titular de la tarjeta:");
         String dni = scanner.nextLine();
         Persona persona = personaService.obtenerPorDni(dni);
@@ -116,6 +117,9 @@ public class MenuController implements CommandLineRunner {
             tarjeta.setTitularNombreCompleto(titularNombreCompleto);
             tarjeta.setPersona(persona);
 
+            EncryptUtil.generarClaveAES();
+            tarjeta.setCodigoSeguridad(EncryptUtil.encriptar(new Random().toString()));
+            tarjeta.setPan(EncryptUtil.encriptar(new Random().toString()));
             tarjetaService.registrarTarjeta(tarjeta, persona.getEmail());
             System.out.println("Tarjeta registrada con éxito.");
         } else {

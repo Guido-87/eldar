@@ -4,6 +4,7 @@ import com.eldar.eldar.model.Persona;
 import com.eldar.eldar.model.Tarjeta;
 import com.eldar.eldar.service.CompraService;
 import com.eldar.eldar.service.TarjetaService;
+import com.eldar.eldar.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,9 +19,9 @@ public class CompraServiceImpl implements CompraService {
     private JavaMailSender emailSender;
 
     @Override
-    public void realizarCompra(Double monto, String detalle, String pan, String cvv) {
+    public void realizarCompra(Double monto, String detalle, String pan, String cvv) throws Exception {
         Tarjeta tarjeta = tarjetaService.obtenerTarjetaPorPan(pan);
-        if (tarjeta != null && tarjeta.getCodigoSeguridad() == (Integer.parseInt(cvv)) && monto < 10000) {
+        if (tarjeta != null && EncryptUtil.desencriptar(tarjeta.getCodigoSeguridad()).equals(cvv) && monto < 10000) {
             System.out.println("Compra realizada por " + monto + " con tarjeta " + pan);
             Persona persona = new Persona();
             SimpleMailMessage message = new SimpleMailMessage();

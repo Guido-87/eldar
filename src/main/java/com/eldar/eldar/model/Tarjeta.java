@@ -20,7 +20,7 @@ public class Tarjeta {
     @JoinColumn(name = "persona_id")
     private Persona persona;
 
-    private int codigoSeguridad;
+    private String codigoSeguridad;
     private String pan;
 
     public Long getId() {
@@ -71,11 +71,11 @@ public class Tarjeta {
         this.persona = persona;
     }
 
-    public int getCodigoSeguridad() {
+    public String getCodigoSeguridad() {
         return codigoSeguridad;
     }
 
-    public void setCodigoSeguridad(int codigoSeguridad) {
+    public void setCodigoSeguridad(String codigoSeguridad) {
         this.codigoSeguridad = codigoSeguridad;
     }
 

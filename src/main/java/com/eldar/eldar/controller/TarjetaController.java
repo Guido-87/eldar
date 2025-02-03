@@ -12,7 +12,7 @@ public class TarjetaController {
     private TarjetaService tarjetaService;
 
     @PostMapping
-    public Tarjeta crear(@RequestBody Tarjeta tarjeta, @RequestParam String email) {
+    public Tarjeta crear(@RequestBody Tarjeta tarjeta, @RequestParam String email) throws Exception {
         return tarjetaService.registrarTarjeta(tarjeta, email);
     }
 

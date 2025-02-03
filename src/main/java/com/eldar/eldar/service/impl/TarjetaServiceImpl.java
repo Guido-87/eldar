@@ -4,12 +4,12 @@ import com.eldar.eldar.exception.AppException;
 import com.eldar.eldar.model.Tarjeta;
 import com.eldar.eldar.repository.TarjetaRepository;
 import com.eldar.eldar.service.TarjetaService;
+import com.eldar.eldar.utils.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class TarjetaServiceImpl implements TarjetaService {
@@ -20,13 +20,18 @@ public class TarjetaServiceImpl implements TarjetaService {
     private JavaMailSender emailSender;
 
     @Override
-    public Tarjeta registrarTarjeta(Tarjeta tarjeta, String email) {
+    public Tarjeta registrarTarjeta(Tarjeta tarjeta, String email) throws Exception {
+        EncryptUtil.generarClaveAES();
+        tarjeta.setCodigoSeguridad(EncryptUtil.encriptar(new Random().toString()));
+        tarjeta.setPan(EncryptUtil.encriptar(new Random().toString()));
         tarjetaRepository.save(tarjeta);
+        /* TODO: Revisar
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("Detalles de tu tarjeta");
         message.setText("CVV: " + tarjeta.getCodigoSeguridad() + "\nPAN: " + tarjeta.getPan());
         emailSender.send(message);
+         */
         return tarjeta;
     }
 
