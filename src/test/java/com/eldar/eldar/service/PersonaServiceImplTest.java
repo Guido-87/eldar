@@ -21,7 +21,7 @@ public class PersonaServiceImplTest {
     private PersonaServiceImpl personaService;
 
     @Test
-    public void testCrearUsuario() {
+    public void testCrearPersona() {
         Persona persona = new Persona();
         persona.setNombre("Guido");
         persona.setEmail("alvarezguido87@gmail.com");

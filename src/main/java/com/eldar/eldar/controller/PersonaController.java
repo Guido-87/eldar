@@ -17,7 +17,7 @@ public class PersonaController {
     }
 
     @DeleteMapping("/{id}")
-    public void eliminarUsuario(@PathVariable Long id) {
-        personaService.eliminarUsuario(id);
+    public void eliminarPersona(@PathVariable Long id) {
+        personaService.eliminarPersona(id);
     }
 }

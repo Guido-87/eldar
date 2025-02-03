@@ -40,7 +40,7 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public void eliminarUsuario(Long id) {
+    public void eliminarPersona(Long id) {
         personaRepository.deleteById(id);
     }
 }
